@@ -45,10 +45,25 @@ public class TodoController {
     @PostMapping("/")
     public Map<String,Long> register(@RequestBody TodoDTO dto) {
         log.info("todoDTO:" + dto);
-
         Long tno = todoService.register(dto);
 
         return Map.of("tno", tno);
+    }
 
+
+    @PutMapping("/{tno}")
+    public Map<String, String> modify(@PathVariable("tno") Long tno
+             , @RequestBody TodoDTO todoDTO   ) {
+
+        todoDTO.setTno(tno);
+        todoService.modify(todoDTO);
+        return Map.of("RESULT","SUCCESS");
+
+    }
+
+    @DeleteMapping("/{tno}")
+    public Map<String, String> remove(@PathVariable("tno") Long tno) {
+        todoService.remove(tno);
+        return Map.of("RESULT","SUCCESS");
     }
 }
