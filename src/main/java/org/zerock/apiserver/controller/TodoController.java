@@ -3,14 +3,13 @@ package org.zerock.apiserver.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.zerock.apiserver.dto.PageRequestDTO;
 import org.zerock.apiserver.dto.PageResponseDTO;
 import org.zerock.apiserver.dto.TodoDTO;
 import org.zerock.apiserver.service.TodoService;
+
+import java.util.Map;
 
 @RestController
 @Log4j2
@@ -40,4 +39,16 @@ public class TodoController {
     }
 
     //들어가야하는 값이 제대로 안들어올 때 레스트 컨트롤러 어드바이스를 쓴다고함.  예외처리를 하는것임.
+
+
+
+    @PostMapping("/")
+    public Map<String,Long> register(@RequestBody TodoDTO dto) {
+        log.info("todoDTO:" + dto);
+
+        Long tno = todoService.register(dto);
+
+        return Map.of("tno", tno);
+
+    }
 }
