@@ -10,6 +10,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.zerock.apiserver.controller.formatter.LocalDateFormatter;
 
+import static org.springframework.http.CacheControl.maxAge;
+
 
 @Configuration
 @Log4j2
@@ -27,8 +29,8 @@ public class CustomServletConfig implements WebMvcConfigurer{
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")  // 어떤 경로에 적용?
-                .maxAge(500)
-                .allowedOrigins("GET","PUT","DELETE","POST","HEAD","OPTIONS")
-                .allowedOrigins("*"); // 어디서 오는것을 허용 해줄것인가?
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS") // 허용할 HTTP 메소드 지정
+                .allowedOrigins("*") // 어디서 오는것을 허용 해줄것인가?
+                .maxAge(500);
     }
 }
