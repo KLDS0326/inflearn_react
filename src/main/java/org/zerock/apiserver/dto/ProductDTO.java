@@ -26,5 +26,5 @@ public class ProductDTO {
     private List<MultipartFile> files = new ArrayList<>();
     //파일이름 > 이미 업로드된 애들
     @Builder.Default
-    private List<String> uploadedFileNames = new ArrayList<>();
+    private List<String> uploadFileNames = new ArrayList<>();
 }
