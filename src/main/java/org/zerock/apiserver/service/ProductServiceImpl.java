@@ -16,6 +16,7 @@ import org.zerock.apiserver.dto.ProductDTO;
 import org.zerock.apiserver.repository.ProductRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,6 +76,39 @@ public class ProductServiceImpl implements ProductService {
         return pno;
     }
 
+    @Override
+    public ProductDTO get(Long pno) {
+
+        Optional<Product> result = productRepository.findById(pno);
+        Product product = result.orElseThrow();
+
+        return entityToDTO(product);
+
+    }
+
+    private ProductDTO entityToDTO(Product product) {
+        ProductDTO productDTO = ProductDTO.builder()
+                .pno(product.getPno())
+                .pname(product.getPname())
+                .pdesc(product.getPdesc())
+                .price(product.getPrice())
+                .delFlag(product.isDelFlag())
+                .build();
+
+        List<ProductImage> imageList = product.getImageList();
+
+        if(imageList == null || imageList.isEmpty()) {
+             return productDTO;
+        }
+
+        List<String> fileNameList = imageList.stream().map( productImage ->
+                productImage.getFileName() ).toList();
+        productDTO.setUploadFileNames(fileNameList);
+
+        return productDTO;
+    }
+
+
 
     private Product dtoToEntity(ProductDTO productDTO) {
         Product product = Product.builder()
@@ -82,10 +116,11 @@ public class ProductServiceImpl implements ProductService {
                 .pname(productDTO.getPname())
                 .pdesc(productDTO.getPdesc())
                 .price(productDTO.getPrice())
+                .delFlag(productDTO.isDelFlag())
                 .build();
         List<String> uploadFileNames = productDTO.getUploadFileNames();
 
-        if (uploadFileNames == null || uploadFileNames.size() == 0) {
+        if (uploadFileNames == null || uploadFileNames.isEmpty()) {
             return product;
         }
 
