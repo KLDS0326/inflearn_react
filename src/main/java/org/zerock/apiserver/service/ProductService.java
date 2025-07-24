@@ -10,4 +10,5 @@ import org.zerock.apiserver.dto.ProductDTO;
 public interface ProductService {
     PageResponseDTO<ProductDTO> getList(PageRequestDTO pageRequestDTO);
 
+    Long register(ProductDTO productDTO);
 }
