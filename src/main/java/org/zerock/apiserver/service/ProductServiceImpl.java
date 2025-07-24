@@ -24,9 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 
 public class ProductServiceImpl implements ProductService {
-
     private final ProductRepository productRepository;
-
 
     @Override
     public PageResponseDTO<ProductDTO> getList(PageRequestDTO pageRequestDTO) {
@@ -109,6 +107,11 @@ public class ProductServiceImpl implements ProductService {
         }
         //저장
         productRepository.save(product);
+    }
+
+    @Override
+    public void remove(Long pno) {
+        productRepository.deleteById(pno);
     }
 
     private ProductDTO entityToDTO(Product product) {
